@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const toDoApi = createApi({
   reducerPath: "toDoApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://first-node-js-app-r.herokuapp.com/api/",
+    baseUrl: "https://todo-redev.herokuapp.com/api/",
   }),
   endpoints: (builder) => ({
     getToDos: builder.query({
