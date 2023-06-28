@@ -1,6 +1,5 @@
-// Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const toDoApi = createApi({
   reducerPath: "toDoApi",
@@ -11,7 +10,7 @@ export const toDoApi = createApi({
     getToDos: builder.query({
       query: () => {
         return {
-          url: `todos?isCompleted=false`,
+          url: `todos`,
           method: "GET",
           headers: {
             Authorization:
@@ -56,8 +55,6 @@ export const toDoApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {
   useGetToDosQuery,
   useCreateToDoMutation,
