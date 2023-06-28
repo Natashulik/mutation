@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/mutation/static/js/main.c8b2ff06.js",
+    "static/js/787.be309114.chunk.js": "/mutation/static/js/787.be309114.chunk.js",
+    "index.html": "/mutation/index.html",
+    "main.c8b2ff06.js.map": "/mutation/static/js/main.c8b2ff06.js.map",
+    "787.be309114.chunk.js.map": "/mutation/static/js/787.be309114.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.c8b2ff06.js"
+  ]
+}
