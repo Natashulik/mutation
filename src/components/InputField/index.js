@@ -1,14 +1,18 @@
-import { useCreateToDoMutation } from "../../services/toDo";
+import { useCreateToDoMutation, useGetToDosQuery } from "../../services/toDo";
 import { enterText } from "../../redux/textSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const InputField = () => {
   const dispatch = useDispatch();
   const { value: title } = useSelector((store) => store.text);
-
-  const [
-    createToDo, // This is the mutation trigger
-  ] = useCreateToDoMutation();
+  const [ createToDo] = useCreateToDoMutation();
+  const { data, error, isLoading, refetch } = useGetToDosQuery();
+  
+  const handleCreateToDo = async () => {
+    await createToDo({ title });
+    refetch();
+    dispatch(enterText(''))
+  };
 
   return (
     <div>
@@ -16,7 +20,7 @@ const InputField = () => {
         value={title}
         onChange={(e) => dispatch(enterText(e.target.value))}
       />
-      <button onClick={() => createToDo({ title })}>add</button>
+       <button onClick={handleCreateToDo}>add</button>
     </div>
   );
 };

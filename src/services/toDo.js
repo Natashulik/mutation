@@ -1,6 +1,7 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hdGljMkB0dXQuYnkiLCJpZCI6NzksImlhdCI6MTY4Nzk0MDYyOX0.IvOXh2bf-auqZrMQEzLovy--vdHGR0xZgCdPsWEWWNQ";
 export const toDoApi = createApi({
   reducerPath: "toDoApi",
   baseQuery: fetchBaseQuery({
@@ -13,21 +14,18 @@ export const toDoApi = createApi({
           url: `todos`,
           method: "GET",
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
+            Authorization:  `Bearer ${token}`
           },
         };
       },
     }),
     createToDo: builder.mutation({
       query: (body) => {
-        console.log(body);
         return {
           url: `todos`,
           method: "POST",
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
+            Authorization: `Bearer ${token}`
           },
           body: body,
         };
@@ -38,19 +36,53 @@ export const toDoApi = createApi({
     }),
     deleteToDo: builder.mutation({
       query: (id) => {
-        console.log(id);
         return {
           url: `todos/${id}`,
           method: "DELETE",
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZsYWQ4QG1haWwucnUiLCJJRCI6IjYzNDYwYmE2ZjBiNjdjMWMzOGZlZGNlNSIsImlhdCI6MTY2ODMxMzQwMH0.9AAfnpTVdu4sUQjm7RXrqQkf0e_BgyL9iVeCuR6nD1s",
+            Authorization: `Bearer ${token}`
           },
         };
       },
       transformResponse: (response, meta, arg) => response.data,
       transformErrorResponse: (response, meta, arg) => response.status,
-      invalidatesTags: ["deleteTosha"],
+      invalidatesTags: ["todos"],
+    }),
+    editToDo: builder.mutation({
+      query: ({ id, newTitle }) => {
+       return {
+          url: `todos/${id}`,
+          method: "PATCH",
+          headers: {
+            "Content-Type":  "application/json",
+            Authorization: `Bearer ${token}`            
+          },
+          body: JSON.stringify({title: newTitle}),
+        };
+      },
+      transformResponse: (response, meta, arg) => response.data,
+      transformErrorResponse: (response, meta, arg) => response.status,
+      invalidatesTags: ["todos"],
+    }),
+    completeToDo: builder.mutation({
+      query: ({id, isCompleted}) => {
+      console.log({id, isCompleted})   
+      return {
+          url: `todos/${id}/isCompleted`,
+          method: "PATCH",
+          headers: {
+            "Content-Type":  "application/json",
+            Authorization: `Bearer ${token}`            
+          },
+          body: JSON.stringify({isCompleted: isCompleted}),
+     };
+      },
+      transformResponse: (response, meta, arg) => {
+        console.log(response); 
+        return  response.data;
+      } ,
+      transformErrorResponse: (response, meta, arg) => response.status ,
+      invalidatesTags: ["todos"],
     }),
   }),
 });
@@ -59,4 +91,6 @@ export const {
   useGetToDosQuery,
   useCreateToDoMutation,
   useDeleteToDoMutation,
+  useEditToDoMutation,
+  useCompleteToDoMutation
 } = toDoApi;
