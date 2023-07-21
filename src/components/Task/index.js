@@ -6,11 +6,10 @@ const Task = ({ id, title, isCompleted }) => {
   const [ editToDo ] = useEditToDoMutation();
   const [completeToDo] = useCompleteToDoMutation();
 
-  const { refetch } = useGetToDosQuery();
-
+  const {  data, refetch } = useGetToDosQuery();
+ 
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
-  const [isTaskCompleted, setIsTaskCompleted]  = useState(isCompleted );
  
   const handleDeleteToDo = async(id)=> {
    await deleteToDo(id);
@@ -31,12 +30,10 @@ const Task = ({ id, title, isCompleted }) => {
     } }
 
   const handleCompleted = async(id) =>{
-   const updatedIsCompleted = !isTaskCompleted;
-   setIsTaskCompleted(updatedIsCompleted)
-   await completeToDo({id, isCompleted: updatedIsCompleted});
-  
-   refetch();
-   
+    const taskData = data.find(task => task.id === id);
+    await completeToDo({id, isCompleted: !taskData.isCompleted});
+
+    refetch();
    }
 
   return (
